@@ -1,0 +1,170 @@
+#include<iostream>
+#include<stdio.h>
+#include<stdlib.h>
+#define Maxsize 10
+using namespace std;
+
+typedef struct LNode
+{
+	int data;//数据域
+	LNode* next;//指针域
+}LNode, *LinkList;
+//LNode为单链表结点,LinkList为该节点的指针
+
+
+//判断是否为空链表
+bool Empty(LinkList& L)
+{
+	return (L->next == NULL);
+}
+
+
+//初始化一个头结点
+void InitList(LinkList& L)
+{
+	L = new LNode;
+	L->next = NULL;
+}
+
+
+//从指定结点前插一个结点
+void InsertNextNode(LinkList& L, LNode* p, int e)
+{
+	if (p == NULL)
+		return;
+	//先后插
+	LNode* Node = new LNode;
+	Node->next = p->next;
+	p->next = Node;
+	//交换数据域数据的位置
+	Node->data = p->data;
+	p->data = e;
+}
+
+
+//从指定结点后插一个结点
+void InsertNextNode(LNode* p, int e)
+{
+	LNode* Node = new LNode;
+	Node->data = e;
+	Node->next = p->next;
+	p->next = Node;
+}
+
+
+//查找操作(按值查找)
+LNode* LocateElem(LinkList& L, int e)
+{
+	LNode* p = L->next;
+	while (p != NULL && p->data != e)
+	{
+		p = p->next;
+	}
+	return p;
+}
+
+
+//查找操作(按位查找)
+LNode* GetElem(LinkList& L, int i)
+{
+	LNode* p;
+	p = L;
+	int j = 0;
+	//j = 0表示指向头结点
+	while (j < i && p != NULL)
+	{
+		j++;
+		p++;
+	}
+	return p;
+}
+
+
+//插入节点（从头开始检索）
+//头结点、位置、插入的数据
+void ListInsert(LinkList& L, int i, int e)
+{
+	LNode* p = GetElem(L, i - 1);
+	if (p == NULL)
+	{
+		cout << "超出链表长度" << endl;
+		return;
+	}
+	//指定结点后插数据
+	InsertNextNode(p, e);
+}
+
+
+//删除结点
+void ListDelete(LinkList& L, int i)
+{
+	LNode* p = GetElem(L, i - 1);
+	LNode* q = p->next;
+	p->next = q->next;
+	q->next = NULL;
+	delete q;
+}
+
+
+//删除指定结点p
+void DeleteNode(LNode* p)
+{
+	LNode* q = p->next;
+	p->data = q->data;
+	p->next = q->next;
+	q->next = NULL;
+	delete q;
+}
+
+
+//计算表长度
+int Length(LinkList& L)
+{
+	int length = 0;
+	LNode* p = L;
+	while (p->next != NULL)
+	{
+		length++;
+		p = p->next;
+	}
+	return length;
+}
+
+
+//尾插法建立单链表
+//在链表尾部插入三个a
+//建立一个尾指针
+void TailInsert(LinkList& L, int a)
+{
+	LNode* p = L->next;
+	//找到最后一个结点p;
+	while (p != NULL)
+		p++;
+	LNode* r = p;//r一直跟随p
+	for(int i=0;i<3;i++)
+	{ 
+		p = new LNode;
+		p->data = a;
+		r->next = p;
+		r = p;
+	}
+}
+
+
+//头插法
+void HeadInsert(LinkList& L, int e)
+{
+	LNode* p = new LNode;
+	p->data = e;
+	p->next = L->next;
+	L->next = p;
+}
+
+int main()
+{
+	LinkList L;//指向单链表的指针(头指针，指向头结点)
+	InitList(L);//创建头结点
+	return 0;
+}
+
+
